@@ -2,6 +2,9 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
+import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import '../styles/globals.css';
 import createEmotionCache from '../utils/createEmotionCache';
 import theme from '../utils/theme';
@@ -18,12 +21,16 @@ export default function App({
   pageProps,
   emotionCache = clientSideEmotionCache,
 }: IAppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>
   );
