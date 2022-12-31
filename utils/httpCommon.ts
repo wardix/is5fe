@@ -2,12 +2,31 @@ import axios from 'axios';
 import { NextRouter } from 'next/router';
 
 const BASE_API_HOST = process.env.NEXT_PUBLIC_BASE_API;
-const HTTP = axios.create({
-  baseURL: BASE_API_HOST,
+
+const deafultHeadersWithoutToken = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
+};
+
+const getDefaultHeadersWithToken = () => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('token');
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  }
+  return getDefaultHeadersWithToken;
+};
+
+const HTTP = axios.create({
+  baseURL: BASE_API_HOST,
+  headers: deafultHeadersWithoutToken.headers,
 });
 
 type InterceptorsType = {
@@ -31,4 +50,9 @@ const runInterceptors = ({ router, store = null }: InterceptorsType) => {
   );
 };
 
-export { runInterceptors, HTTP };
+export {
+  runInterceptors,
+  HTTP,
+  getDefaultHeadersWithToken,
+  deafultHeadersWithoutToken,
+};
