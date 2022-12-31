@@ -1,6 +1,7 @@
 import { Inter } from '@next/font/google';
 import Image from 'next/image';
-import HeadSeo from '../components/HeadSeo';
+import Link from 'next/link';
+import HeadSeo from '../components/utilities/HeadSeo';
 import styles from '../styles/Home.module.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -10,6 +11,9 @@ export default function Home() {
     <>
       <HeadSeo title="Home" description="Halaman awal IS-5" key="home" />
       <main className={styles.main}>
+        <Link href="/login" prefetch={false}>
+          Login
+        </Link>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;

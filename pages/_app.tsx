@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import GlobalLayout from '../components/layouts/GlobalLayout';
 import '../styles/globals.css';
 import createEmotionCache from '../utils/createEmotionCache';
 import theme from '../utils/theme';
@@ -22,13 +23,16 @@ export default function App({
   emotionCache = clientSideEmotionCache,
 }: IAppProps) {
   const [queryClient] = useState(() => new QueryClient());
+
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
+          <GlobalLayout>
+            <Component {...pageProps} />
+          </GlobalLayout>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
