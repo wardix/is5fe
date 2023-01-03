@@ -9,11 +9,13 @@ import GlobalLayout from '../components/layouts/GlobalLayout';
 import '../styles/globals.css';
 import createEmotionCache from '../utils/createEmotionCache';
 import theme from '../utils/theme';
+import { NextPageWithLayout } from './page';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 interface IAppProps extends AppProps {
+  Component: NextPageWithLayout;
   emotionCache?: EmotionCache;
 }
 
@@ -23,16 +25,15 @@ export default function App({
   emotionCache = clientSideEmotionCache,
 }: IAppProps) {
   const [queryClient] = useState(() => new QueryClient());
-
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => page);
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
-          <GlobalLayout>
-            <Component {...pageProps} />
-          </GlobalLayout>
+          <GlobalLayout>{getLayout(<Component {...pageProps} />)}</GlobalLayout>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
