@@ -8,10 +8,10 @@ export interface IGlobalLayout extends React.ComponentPropsWithoutRef<'div'> {}
 
 const GlobalLayout: React.FC<IGlobalLayout> = ({ children }) => {
   const router = useRouter();
-  const [isAuthenticated, setAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [, setAuthenticated] = useAtom(isAuthenticatedAtom);
   useEffect(() => {
     runInterceptors({ router, store: { setAuthenticated } });
-  }, [runInterceptors]);
+  }, [router, setAuthenticated]);
   return (
     <>
       <main>{children}</main>

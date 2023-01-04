@@ -1,13 +1,26 @@
+import { useLayoutEffect, useState } from 'react';
 import DashboardLayout from '../components/layouts/DashboardLayout';
 import NotificationList from '../components/lists/NotificationList';
 import HeadSeo from '../components/utilities/HeadSeo';
 import { NextPageWithLayout } from './page';
 
+type NotificationType = {
+  name: string;
+  date: string;
+};
+
 const Notification: NextPageWithLayout = () => {
-  const notificationData = Array.from(Array(10).keys()).map((i) => ({
-    name: 'name ' + i,
-    date: new Date().toISOString(),
-  }));
+  const [notificationData, setNotificationData] = useState<NotificationType[]>(
+    []
+  );
+  useLayoutEffect(() => {
+    const currentDate = new Date().toISOString();
+    const sampleData = Array.from(Array(10).keys()).map((i) => ({
+      name: 'name ' + i,
+      date: currentDate,
+    }));
+    setNotificationData(sampleData);
+  }, []);
   return (
     <>
       <HeadSeo

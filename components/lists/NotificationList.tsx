@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
+import { Fragment } from 'react';
 
 type NotificationType = {
   name: string;
@@ -19,7 +20,7 @@ type NotificationListType = {
   notifications: Array<NotificationType>;
 };
 
-const LoginCard = ({ notifications }: NotificationListType) => {
+const NotificationList = ({ notifications }: NotificationListType) => {
   return (
     <>
       <List sx={{ px: 2 }}>
@@ -44,7 +45,7 @@ const LoginCard = ({ notifications }: NotificationListType) => {
           >
             {notifications.map((notification) => {
               return (
-                <>
+                <Fragment key={notification.name}>
                   <ListItemButton>
                     <HelpRounded fontSize="large" color="primary" />
                     <Box sx={{ ml: 2 }}>
@@ -57,7 +58,7 @@ const LoginCard = ({ notifications }: NotificationListType) => {
                     </Box>
                   </ListItemButton>
                   <Divider />
-                </>
+                </Fragment>
               );
             })}
           </List>
@@ -67,4 +68,4 @@ const LoginCard = ({ notifications }: NotificationListType) => {
   );
 };
 
-export default LoginCard;
+export default NotificationList;
