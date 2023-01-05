@@ -13,6 +13,7 @@ import {
   ListItemText,
   Popper,
   Tooltip,
+  useScrollTrigger,
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
@@ -23,20 +24,47 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import { grey } from '@mui/material/colors';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Fragment, cloneElement, useState } from 'react';
+import FeedbackDialog from '../dialogs/FeedbackDialog';
 
-export default function PrimaryAppBar() {
+interface Props {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window?: () => Window;
+  children?: React.ReactElement;
+}
+
+function ElevationScroll(props: Props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    target: window ? window() : undefined,
+  });
+
+  return cloneElement(children || <></>, {
+    elevation: trigger ? 4 : 0,
+  });
+}
+
+export default function PrimaryAppBar(props: Props) {
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(
     null
   );
   const [notificationAnchorEl, setNotificationAnchorEl] =
     useState<null | HTMLElement>(null);
+  const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
   const sampleData = Array.from(Array(10));
-  const isMenuOpen = Boolean(profileAnchorEl);
+  const isProfileMenuOpen = Boolean(profileAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,6 +80,9 @@ export default function PrimaryAppBar() {
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
+  };
+  const handleFeedbackClose = () => {
+    setFeedbackOpen(false);
   };
 
   const handleProfileMenuClose = () => {
@@ -82,7 +113,7 @@ export default function PrimaryAppBar() {
         vertical: 'top',
         horizontal: 'right',
       }}
-      open={isMenuOpen}
+      open={isProfileMenuOpen}
       onClose={handleProfileMenuClose}
     >
       <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
@@ -155,6 +186,7 @@ export default function PrimaryAppBar() {
       open={isNotificationOpen}
       anchorEl={notificationAnchorEl}
       placement="bottom-end"
+      sx={{ zIndex: 1100 }}
       transition
     >
       {({ TransitionProps }) => (
@@ -173,9 +205,9 @@ export default function PrimaryAppBar() {
               sx={{ position: 'relative', bgcolor: 'background.paper' }}
               onClick={handleNotificationMenuClose}
             >
-              {sampleData.map(() => {
+              {sampleData.map((data, idx) => {
                 return (
-                  <>
+                  <Fragment key={idx}>
                     <ListItemButton>
                       <Avatar>IS</Avatar>
                       <Box ml={2}>
@@ -184,7 +216,7 @@ export default function PrimaryAppBar() {
                       </Box>
                     </ListItemButton>
                     <Divider />
-                  </>
+                  </Fragment>
                 );
               })}
               <ListItemButton
@@ -215,79 +247,88 @@ export default function PrimaryAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" variant="elevation" color="primary">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Tooltip title="Feedback">
+    <>
+      <Box sx={{ flexGrow: 1, height: '100%', mb: 8 }}>
+        <ElevationScroll {...props}>
+          <AppBar variant="elevation" color="primary">
+            <Toolbar>
               <IconButton
                 size="large"
-                aria-label="send user feedback"
+                edge="start"
                 color="inherit"
+                aria-label="open drawer"
+                sx={{ mr: 2 }}
               >
-                <FeedbackOutlined />
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Tooltip title="Help">
-              <IconButton
-                size="large"
-                aria-label="open help menu"
-                color="inherit"
-              >
-                <HelpOutline />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Notification">
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-                onClick={handleNotificationMenuToggle}
-              >
-                <Badge badgeContent={sampleData.length} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderProfileMenu}
-      {renderNotificationList}
-    </Box>
+              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <Tooltip title="Feedback">
+                  <IconButton
+                    size="large"
+                    aria-label="send user feedback"
+                    color="inherit"
+                    onClick={() => setFeedbackOpen(true)}
+                  >
+                    <FeedbackOutlined />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Help">
+                  <IconButton
+                    size="large"
+                    aria-label="open help menu"
+                    color="inherit"
+                  >
+                    <HelpOutline />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Notification">
+                  <IconButton
+                    size="large"
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                    onClick={handleNotificationMenuToggle}
+                  >
+                    <Badge badgeContent={sampleData.length} color="error">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Box>
+              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        </ElevationScroll>
+        {renderMobileMenu}
+        {renderProfileMenu}
+        {renderNotificationList}
+      </Box>
+      <FeedbackDialog
+        open={feedbackOpen}
+        onClose={handleFeedbackClose}
+      ></FeedbackDialog>
+    </>
   );
 }

@@ -13,6 +13,10 @@ const theme = createTheme({
       main: red.A400,
     },
   },
+  typography: {
+    fontFamily: ['"Roboto"', '"Helvetica"', '"Arial"', 'sans-serif'].join(','),
+    fontSize: 13,
+  },
   spacing: 8,
 });
 export default theme;

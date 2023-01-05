@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardLayout from '../components/layouts/DashboardLayout';
 import NotificationList from '../components/lists/NotificationList';
 import HeadSeo from '../components/utilities/HeadSeo';
@@ -13,7 +13,7 @@ const Notification: NextPageWithLayout = () => {
   const [notificationData, setNotificationData] = useState<NotificationType[]>(
     []
   );
-  useLayoutEffect(() => {
+  useEffect(() => {
     const currentDate = new Date().toISOString();
     const sampleData = Array.from(Array(10).keys()).map((i) => ({
       name: 'name ' + i,
