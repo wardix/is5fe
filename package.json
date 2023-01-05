@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev-lint": "next lint && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,6 +22,7 @@
     "axios": "^1.2.1",
     "eslint": "8.30.0",
     "eslint-config-next": "13.1.1",
+    "html2canvas": "^1.4.1",
     "jotai": "^1.12.0",
     "next": "13.1.1",
     "react": "18.2.0",
