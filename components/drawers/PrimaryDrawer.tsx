@@ -19,7 +19,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { navItemsAtom } from '../../store/GlobalStore';
-import { NavParent } from '../../types/GlobalType';
+import { NavChild, NavParent } from '../../types/GlobalType';
 import { useIsomorphicLayoutEffect } from '../../utils/index';
 
 const drawerWidth = 240;
@@ -101,7 +101,8 @@ export default function PrimaryDrawer({
     setDrawerOpen && setDrawerOpen(false);
   };
 
-  const handleClickNavItem = (navItem: NavParent) => {
+  const handleClickNavItem = (navItem: NavParent | NavChild) => {
+    if (!navItem.isParent) return router.push(navItem.path);
     setDrawerOpen && setDrawerOpen(true);
     let newOpenedNavParents = openedNavParents;
     if (openedNavParents.includes(navItem.path))
@@ -125,7 +126,7 @@ export default function PrimaryDrawer({
               mx: 2,
             }}
           >
-            <Image src="next.svg" alt="Brand Logo" fill />
+            <Image src="/next.svg" alt="Brand Logo" fill />
           </Box>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
@@ -149,6 +150,7 @@ export default function PrimaryDrawer({
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
+                selected={router.asPath === navItem.path}
                 onClick={() => {
                   handleClickNavItem(navItem);
                 }}
@@ -188,6 +190,7 @@ export default function PrimaryDrawer({
                         <ListItemButton
                           selected={router.asPath === child.path}
                           sx={{ pl: 8 }}
+                          onClick={() => handleClickNavItem(child)}
                         >
                           <ListItemText
                             primary={child.name}
