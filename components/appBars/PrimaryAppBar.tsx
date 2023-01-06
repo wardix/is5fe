@@ -13,9 +13,10 @@ import {
   ListItemText,
   Popper,
   Tooltip,
+  styled,
   useScrollTrigger,
 } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -28,19 +29,14 @@ import { Fragment, cloneElement, useState } from 'react';
 import FeedbackDialog from '../dialogs/FeedbackDialog';
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
   children?: React.ReactElement;
+  openDrawer?: boolean;
+  onDrawerOpen?: (open: boolean) => void;
 }
 
 function ElevationScroll(props: Props) {
   const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
@@ -51,6 +47,30 @@ function ElevationScroll(props: Props) {
     elevation: trigger ? 4 : 0,
   });
 }
+
+const drawerWidth = 240;
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
 
 export default function PrimaryAppBar(props: Props) {
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(
@@ -186,7 +206,7 @@ export default function PrimaryAppBar(props: Props) {
       open={isNotificationOpen}
       anchorEl={notificationAnchorEl}
       placement="bottom-end"
-      sx={{ zIndex: 1100 }}
+      sx={{ zIndex: 1201 }}
       transition
     >
       {({ TransitionProps }) => (
@@ -250,14 +270,17 @@ export default function PrimaryAppBar(props: Props) {
     <>
       <Box sx={{ flexGrow: 1, height: '100%', mb: 8 }}>
         <ElevationScroll {...props}>
-          <AppBar variant="elevation" color="primary">
+          <AppBar open={props.openDrawer} variant="elevation" color="primary">
             <Toolbar>
               <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="open drawer"
-                sx={{ mr: 2 }}
+                sx={{ mr: 2, ...(props.openDrawer && { display: 'none' }) }}
+                onClick={() => {
+                  props.onDrawerOpen && props.onDrawerOpen(true);
+                }}
               >
                 <MenuIcon />
               </IconButton>
