@@ -3,7 +3,7 @@ import { atom } from 'jotai';
 const navs = [
   {
     isParent: false,
-    path: '/lead-pool',
+    path: '/notification',
     name: 'Lead Pool',
     icon: 'lead-pools',
     hideOnSelfOwn: false,
@@ -11,7 +11,7 @@ const navs = [
   },
   {
     isParent: true,
-    path: '/notification',
+    path: '/dashboard',
     name: 'Activity',
     icon: 'activity',
     hideOnSelfOwn: false,
@@ -19,53 +19,53 @@ const navs = [
     children: [
       {
         isParent: false,
-        path: '/activity/task',
+        path: '/dashboard/example',
         name: 'Task',
         hideOnSelfOwn: false,
         permissions: ['prospect.activities.view'],
       },
       {
         isParent: false,
-        path: '/activity/conversation-log',
+        path: '/dashboard/conversation-log',
         name: 'Conversation Log',
         hideOnSelfOwn: false,
         permissions: ['prospect.activities.view'],
       },
       {
         isParent: false,
-        path: '/activity/check-in',
+        path: '/dashboard/check-in',
         name: 'Check In',
         permissions: ['prospect.activities.view'],
       },
     ],
   },
-  {
-    isParent: true,
-    path: '/dashboard',
-    name: 'User Management',
-    icon: 'user-management',
-    hideOnSelfOwn: true,
-    permissions: [
-      'user_management.user_&_group.view',
-      'user_management.role_permission.view',
-    ],
-    children: [
-      {
-        isParent: false,
-        path: '/dashboard/wew',
-        name: 'User & Group',
-        hideOnSelfOwn: true,
-        permissions: ['user_management.user_&_group.view'],
-      },
-      {
-        isParent: false,
-        path: '/user/roles',
-        name: 'Role Permission',
-        hideOnSelfOwn: true,
-        permissions: ['user_management.role_permission.view'],
-      },
-    ],
-  },
+  // {
+  //   isParent: true,
+  //   path: '/dashboard',
+  //   name: 'User Management',
+  //   icon: 'user-management',
+  //   hideOnSelfOwn: true,
+  //   permissions: [
+  //     'user_management.user_&_group.view',
+  //     'user_management.role_permission.view',
+  //   ],
+  //   children: [
+  //     {
+  //       isParent: false,
+  //       path: '/dashboard/wew',
+  //       name: 'User & Group',
+  //       hideOnSelfOwn: true,
+  //       permissions: ['user_management.user_&_group.view'],
+  //     },
+  //     {
+  //       isParent: false,
+  //       path: '/user/roles',
+  //       name: 'Role Permission',
+  //       hideOnSelfOwn: true,
+  //       permissions: ['user_management.role_permission.view'],
+  //     },
+  //   ],
+  // },
 ];
 
 export const navItemsAtom = atom(navs);
