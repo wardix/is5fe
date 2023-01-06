@@ -23,7 +23,7 @@ type NotificationListType = {
 const NotificationList = ({ notifications }: NotificationListType) => {
   return (
     <>
-      <List sx={{ px: 2 }}>
+      <List sx={{ px: 0 }}>
         <ListItemText>
           <Typography
             variant="h5"
