@@ -1,3 +1,4 @@
+import { LoginInfo } from '@/types/UserType';
 import {
   Button,
   Card,
@@ -9,7 +10,6 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
-import { LoginInfo } from '../../types/UserType';
 
 type UserLoginType = {
   onSubmit: ({ username, password }: LoginInfo) => void;
