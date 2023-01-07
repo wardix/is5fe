@@ -1,10 +1,5 @@
-import dynamic from 'next/dynamic';
+import DashboardLayout from '@/components/layouts/DashboardLayout';
 import { NextPageWithLayout } from '../page';
-
-const DashboardLayout = dynamic(
-  () => import('@/components/layouts/DashboardLayout'),
-  { ssr: false }
-);
 
 const Example: NextPageWithLayout = () => {
   return <>Example</>;

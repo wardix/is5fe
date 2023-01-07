@@ -1,12 +1,8 @@
+import DashboardLayout from '@/components/layouts/DashboardLayout';
 import HeadSeo from '@/components/utilities/HeadSeo';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from './page';
-
-const DashboardLayout = dynamic(
-  () => import('@/components/layouts/DashboardLayout'),
-  { ssr: false }
-);
 
 const NotificationList = dynamic(
   () => import('@/components/lists/NotificationList'),
