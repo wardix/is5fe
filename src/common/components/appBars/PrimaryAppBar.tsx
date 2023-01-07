@@ -24,9 +24,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import { grey } from '@mui/material/colors';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Fragment, cloneElement, useState } from 'react';
-import FeedbackDialog from '../dialogs/FeedbackDialog';
+
+const FeedbackDialog = dynamic(() => import('../dialogs/FeedbackDialog'), {
+  ssr: false,
+});
 
 interface Props {
   window?: () => Window;

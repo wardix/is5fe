@@ -1,11 +1,15 @@
+import HeadSeo from '@/components/utilities/HeadSeo';
+import fetchLogin from '@/services/login.service';
 import { Alert, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import LoginCard from '../components/cards/LoginCard';
-import HeadSeo from '../components/utilities/HeadSeo';
-import fetchLogin from '../services/login.service';
+
+const LoginCard = dynamic(() => import('@/components/cards/LoginCard'), {
+  ssr: false,
+});
 
 export default function SignIn() {
   const router = useRouter();

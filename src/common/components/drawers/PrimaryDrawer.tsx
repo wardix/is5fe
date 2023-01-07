@@ -1,3 +1,6 @@
+import { navItemsAtom } from '@/store/GlobalStore';
+import { NavChild, NavParent } from '@/types/GlobalType';
+import { useIsomorphicLayoutEffect } from '@/utils/index';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -18,9 +21,6 @@ import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { navItemsAtom } from '../../store/GlobalStore';
-import { NavChild, NavParent } from '../../types/GlobalType';
-import { useIsomorphicLayoutEffect } from '../../utils/index';
 
 const drawerWidth = 240;
 

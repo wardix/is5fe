@@ -1,8 +1,8 @@
+import { isAuthenticatedAtom } from '@/store/AuthStore';
+import { runInterceptors } from '@/utils/httpCommon';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { isAuthenticatedAtom } from '../../store/AuthStore';
-import { runInterceptors } from '../../utils/httpCommon';
 
 export interface IGlobalLayout extends React.ComponentPropsWithoutRef<'div'> {}
 

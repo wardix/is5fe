@@ -1,6 +1,12 @@
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import PrimaryAppBar from '../appBars/PrimaryAppBar';
-import PrimaryDrawer from '../drawers/PrimaryDrawer';
+
+const PrimaryAppBar = dynamic(() => import('../appBars/PrimaryAppBar'), {
+  ssr: false,
+});
+const PrimaryDrawer = dynamic(() => import('../drawers/PrimaryDrawer'), {
+  ssr: false,
+});
 
 export interface IDashboardLayout
   extends React.ComponentPropsWithoutRef<'div'> {}

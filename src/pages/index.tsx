@@ -1,8 +1,8 @@
+import HeadSeo from '@/components/utilities/HeadSeo';
+import styles from '@/styles/Home.module.css';
 import { Inter } from '@next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
-import HeadSeo from '../components/utilities/HeadSeo';
-import styles from '../styles/Home.module.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

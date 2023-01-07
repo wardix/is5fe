@@ -1,3 +1,7 @@
+import GlobalLayout from '@/components/layouts/GlobalLayout';
+import '@/styles/globals.css';
+import createEmotionCache from '@/utils/createEmotionCache';
+import theme from '@/utils/theme';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
@@ -5,10 +9,6 @@ import type { AppProps } from 'next/app';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import GlobalLayout from '../components/layouts/GlobalLayout';
-import '../styles/globals.css';
-import createEmotionCache from '../utils/createEmotionCache';
-import theme from '../utils/theme';
 import { NextPageWithLayout } from './page';
 
 // Client-side cache, shared for the whole session of the user in the browser.

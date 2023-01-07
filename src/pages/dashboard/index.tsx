@@ -1,5 +1,5 @@
-import DashboardLayout from '../../components/layouts/DashboardLayout';
-import HeadSeo from '../../components/utilities/HeadSeo';
+import HeadSeo from '@/common/components/utilities/HeadSeo';
+import DashboardLayout from '@/components/layouts/DashboardLayout';
 import { NextPageWithLayout } from '../page';
 
 const Dashboard: NextPageWithLayout = () => {
