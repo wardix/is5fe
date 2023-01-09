@@ -1,33 +1,57 @@
 import HeadSeo from '@/components/utilities/HeadSeo';
-import fetchLogin from '@/services/login.service';
+import { fetchLogin } from '@/services/login.service';
 import { Alert, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
+import { useAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { userProfileAtom } from '../common/store/AuthStore';
 
 const LoginCard = dynamic(() => import('@/components/cards/LoginCard'), {
   ssr: false,
 });
 
+type LoginResponseType = {
+  created: string;
+  expired: string;
+  token: string;
+};
+
 export default function SignIn() {
   const router = useRouter();
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   const [errorLoginMsg, setErrorLoginMsg] = useState({ message: '' });
-  const { mutate: mutateLogin } = useMutation(fetchLogin, {
+  const { mutate: handleLogin } = useMutation(fetchLogin, {
     onSuccess({ data }) {
       handleLoginSucceed(data);
-      router.push('/');
     },
     onError({ response }) {
       setErrorLoginMsg(response.data);
       setIsOpenSnackbar(true);
     },
   });
+  const [userProfile, setUserProfile] = useAtom(userProfileAtom);
   const handleClose = () => {
     setIsOpenSnackbar(false);
   };
+
+  const handleLoginSucceed = (data: LoginResponseType) => {
+    localStorage.setItem('token', data.token);
+    const returnUrl: string = router.query.returnUrl?.toString() || '/';
+    router.push(returnUrl);
+  };
+
+  useEffect(() => {
+    // redirect to home if already logged in
+    const token =
+      typeof window !== 'undefined' && localStorage.getItem('token');
+    if (userProfile && token) {
+      router.push('/dashboard');
+    }
+  }, []);
+
   return (
     <>
       <HeadSeo
@@ -57,18 +81,8 @@ export default function SignIn() {
             {errorLoginMsg.message}
           </Alert>
         </Snackbar>
-        <LoginCard onSubmit={mutateLogin}></LoginCard>
+        <LoginCard onSubmit={handleLogin}></LoginCard>
       </Box>
     </>
   );
 }
-
-type LoginResponseType = {
-  created: string;
-  expired: string;
-  token: string;
-};
-
-const handleLoginSucceed = (data: LoginResponseType) => {
-  localStorage.setItem('token', data.token);
-};
