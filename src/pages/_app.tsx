@@ -1,4 +1,5 @@
 import GlobalLayout from '@/components/layouts/GlobalLayout';
+import RouteGuard from '@/components/utilities/RouteGuard';
 import '@/styles/globals.css';
 import createEmotionCache from '@/utils/createEmotionCache';
 import theme from '@/utils/theme';
@@ -33,7 +34,13 @@ export default function App({
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
-          <GlobalLayout>{getLayout(<Component {...pageProps} />)}</GlobalLayout>
+          <GlobalLayout>
+            {getLayout(
+              <RouteGuard>
+                <Component {...pageProps} />
+              </RouteGuard>
+            )}
+          </GlobalLayout>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
