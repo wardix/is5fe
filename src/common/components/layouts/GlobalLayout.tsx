@@ -1,5 +1,6 @@
 import { isAuthenticatedAtom } from '@/store/AuthStore';
 import { runInterceptors } from '@/utils/httpCommon';
+import { Box } from '@mui/system';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -14,7 +15,9 @@ const GlobalLayout: React.FC<IGlobalLayout> = ({ children }) => {
   }, [router, setAuthenticated]);
   return (
     <>
-      <main>{children}</main>
+      <main>
+        <Box sx={{ minHeight: 'calc(100vh - 64px)' }}>{children}</Box>
+      </main>
     </>
   );
 };
