@@ -1,4 +1,5 @@
 import { atom } from 'jotai';
+import helpDocs from '../helps';
 
 const navs = [
   {
@@ -68,4 +69,75 @@ const navs = [
   // },
 ];
 
+const helpContents = [
+  {
+    id: 'general',
+    label: 'General',
+    // contents: helpDocs.generalHelp,
+  },
+  {
+    id: 'lead',
+    label: 'Lead',
+    contents: helpDocs.example,
+  },
+  {
+    id: 'account',
+    label: 'Account',
+    // contents: helpDocs.accountHelp,
+  },
+  {
+    id: 'contact',
+    label: 'Contacts',
+    // contents: helpDocs.contactHelp,
+  },
+  {
+    id: 'opportunity',
+    label: 'Opportunity',
+    // contents: helpDocs.opportunityHelp,
+  },
+  {
+    id: 'leadPool',
+    label: 'Lead Pool',
+    // contents: helpDocs.leadPoolHelp,
+  },
+  {
+    id: 'activity',
+    label: 'Activity',
+    // contents: helpDocs.activityHelp,
+  },
+  {
+    id: 'noteAndFiles',
+    label: 'Note & File',
+    // contents: helpDocs.noteAndFileHelp,
+  },
+  {
+    id: 'reseller',
+    label: 'Reseller',
+    // contents: helpDocs.resellerHelp,
+  },
+  {
+    id: 'report',
+    label: 'Report',
+    // contents: helpDocs.reportHelp,
+  },
+  {
+    id: 'userManagement',
+    label: 'User Management',
+    // contents: helpDocs.userManagementHelp,
+  },
+  {
+    id: 'setting',
+    label: 'Setting',
+    // contents: helpDocs.settingHelp,
+  },
+  {
+    id: 'log',
+    label: 'Log',
+    // contents: helpDocs.logHelp,
+  },
+];
+
 export const navItemsAtom = atom(navs);
+export const isOpenHelpDrawerAtom = atom<boolean>(false);
+export const helpContentsAtom = atom(helpContents);
+export const selectedHelpContentAtom = atom<string | null>(null);

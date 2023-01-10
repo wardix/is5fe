@@ -1,3 +1,4 @@
+import { isOpenHelpDrawerAtom } from '@/store/GlobalStore';
 import { FeedbackOutlined } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import HelpOutline from '@mui/icons-material/HelpOutline';
@@ -24,6 +25,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import { grey } from '@mui/material/colors';
+import { useAtom } from 'jotai';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Fragment, cloneElement, useState } from 'react';
@@ -86,6 +88,7 @@ export default function PrimaryAppBar(props: Props) {
   const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
+  const [openHelpDrawer, setOpenHelpDrawer] = useAtom(isOpenHelpDrawerAtom);
 
   const sampleData = Array.from(Array(10));
   const isProfileMenuOpen = Boolean(profileAnchorEl);
@@ -173,7 +176,12 @@ export default function PrimaryAppBar(props: Props) {
         <p>Send Feedback</p>
       </MenuItem>
       <MenuItem>
-        <IconButton size="large" aria-label="open help menu" color="inherit">
+        <IconButton
+          size="large"
+          aria-label="open help menu"
+          color="inherit"
+          onClick={() => setOpenHelpDrawer(!openHelpDrawer)}
+        >
           <HelpOutline />
         </IconButton>
         <p>Help</p>
@@ -305,6 +313,7 @@ export default function PrimaryAppBar(props: Props) {
                     size="large"
                     aria-label="open help menu"
                     color="inherit"
+                    onClick={() => setOpenHelpDrawer(!openHelpDrawer)}
                   >
                     <HelpOutline />
                   </IconButton>
