@@ -50,7 +50,7 @@ export default function SignIn() {
     if (userProfile && token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [userProfile, router]);
 
   return (
     <>
