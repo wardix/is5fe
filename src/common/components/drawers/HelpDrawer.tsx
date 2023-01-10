@@ -161,14 +161,15 @@ export default function HelpDrawer() {
             {ListHelp}
           </Fade>
           <Fade
-            in={!!selectedHelpContent}
-            style={{ display: !!selectedHelpContent ? 'block' : 'none' }}
+            in={selectedHelpContent ? true : false}
+            style={{ display: selectedHelpContent ? 'block' : 'none' }}
           >
             <Box sx={{ py: 2 }}>
               <Button
                 variant="text"
-                onClick={() => setSelectedHelpContent(null)}
                 color="inherit"
+                aria-label="Back"
+                onClick={() => setSelectedHelpContent(null)}
               >
                 <ArrowBack sx={{ mr: 1 }} /> Back
               </Button>

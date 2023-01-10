@@ -1,6 +1,5 @@
 import { HelpRounded } from '@mui/icons-material';
 import {
-  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -9,7 +8,6 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
-import { Fragment } from 'react';
 
 type NotificationType = {
   name: string;
@@ -24,16 +22,18 @@ const NotificationList = ({ notifications }: NotificationListType) => {
   return (
     <>
       <List sx={{ px: 0 }}>
-        <ListItemText>
-          <Typography
-            variant="h5"
-            component="h2"
-            fontWeight={600}
-            color="primary"
-          >
-            Today
-          </Typography>
-        </ListItemText>
+        <ListItem sx={{ p: 0 }}>
+          <ListItemText>
+            <Typography
+              variant="h5"
+              component="h2"
+              fontWeight={600}
+              color="primary"
+            >
+              Today
+            </Typography>
+          </ListItemText>
+        </ListItem>
         <ListItem sx={{ px: 0 }}>
           <List
             sx={{
@@ -45,11 +45,11 @@ const NotificationList = ({ notifications }: NotificationListType) => {
           >
             {notifications.map((notification) => {
               return (
-                <Fragment key={notification.name}>
+                <ListItem sx={{ p: 0 }} key={notification.name} divider>
                   <ListItemButton>
                     <HelpRounded fontSize="large" color="primary" />
                     <Box sx={{ ml: 2 }}>
-                      <Typography variant="h6" component="h6" fontWeight={500}>
+                      <Typography variant="h6" component="h3" fontWeight={500}>
                         Ini toh yang namanya judul {notification.name}
                       </Typography>
                       <ListItemText sx={{ my: 0 }}>
@@ -57,8 +57,7 @@ const NotificationList = ({ notifications }: NotificationListType) => {
                       </ListItemText>
                     </Box>
                   </ListItemButton>
-                  <Divider />
-                </Fragment>
+                </ListItem>
               );
             })}
           </List>

@@ -128,7 +128,7 @@ export default function PrimaryDrawer({
           >
             <Image src="/next.svg" alt="Brand Logo" fill />
           </Box>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton aria-label="Collapse" onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
             ) : (
