@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import HelpDrawer from '../drawers/HelpDrawer';
 
 const PrimaryAppBar = dynamic(() => import('../appBars/PrimaryAppBar'), {
   ssr: false,
@@ -25,6 +26,7 @@ const DashboardLayout: React.FC<IDashboardLayout> = ({ children }) => {
       >
         {children}
       </PrimaryDrawer>
+      <HelpDrawer></HelpDrawer>
     </>
   );
 };
