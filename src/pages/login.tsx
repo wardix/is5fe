@@ -1,5 +1,5 @@
-import HeadSeo from '@/components/utilities/HeadSeo';
 import { fetchLogin } from '@/services/login.service';
+import { userProfileAtom } from '@/store/AuthStore';
 import { Alert, Snackbar } from '@mui/material';
 import { Box } from '@mui/system';
 import { useAtom } from 'jotai';
@@ -7,8 +7,11 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import { userProfileAtom } from '../common/store/AuthStore';
+import { NextPageWithLayout } from './page';
 
+const HeadSeo = dynamic(() => import('@/components/utilities/HeadSeo'), {
+  ssr: false,
+});
 const LoginCard = dynamic(() => import('@/components/cards/LoginCard'), {
   ssr: false,
 });
@@ -19,7 +22,7 @@ type LoginResponseType = {
   token: string;
 };
 
-export default function SignIn() {
+const SignIn: NextPageWithLayout = () => {
   const router = useRouter();
   const [isOpenSnackbar, setIsOpenSnackbar] = useState(false);
   const [errorLoginMsg, setErrorLoginMsg] = useState({ message: '' });
@@ -85,4 +88,6 @@ export default function SignIn() {
       </Box>
     </>
   );
-}
+};
+
+export default SignIn;

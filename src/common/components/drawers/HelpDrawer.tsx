@@ -21,16 +21,25 @@ import {
 import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import { useAtom } from 'jotai';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const drawerWidth = { sm: '100vw', md: 360 };
 
-export default function HelpDrawer() {
+const HelpDrawer: React.FC = () => {
   const [open, setOpen] = useAtom(isOpenHelpDrawerAtom);
   const [helpContents, setHelpContents] = useAtom(helpContentsAtom);
   const [openedHelpItems, setOpenedHelpItems] = useState<string[]>([]);
   const [selectedHelpContent, setSelectedHelpContent] = useAtom(
     selectedHelpContentAtom
+  );
+
+  const handleClickHelpItem = useCallback(
+    (id: string) => {
+      if (!openedHelpItems.includes(id))
+        return setOpenedHelpItems([...openedHelpItems, id]);
+      return setOpenedHelpItems(openedHelpItems.filter((item) => item !== id));
+    },
+    [openedHelpItems]
   );
 
   const ListHelp = (
@@ -47,13 +56,7 @@ export default function HelpDrawer() {
               justifyContent: open ? 'initial' : 'center',
               px: 2.5,
             }}
-            onClick={() => {
-              if (!openedHelpItems.includes(helpItem.id))
-                return setOpenedHelpItems([...openedHelpItems, helpItem.id]);
-              return setOpenedHelpItems(
-                openedHelpItems.filter((item) => item !== helpItem.id)
-              );
-            }}
+            onClick={() => handleClickHelpItem(helpItem.id)}
           >
             <ListItemText
               primary={helpItem.label}
@@ -184,4 +187,6 @@ export default function HelpDrawer() {
       </Drawer>
     </>
   );
-}
+};
+
+export default HelpDrawer;

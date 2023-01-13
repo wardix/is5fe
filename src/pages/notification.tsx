@@ -1,7 +1,8 @@
 import DashboardLayout from '@/components/layouts/DashboardLayout';
-import HeadSeo from '@/components/utilities/HeadSeo';
+import { NotificationType } from '@/components/lists/NotificationList';
+import { useIsomorphicLayoutEffect } from '@/utils/index';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { NextPageWithLayout } from './page';
 
 const NotificationList = dynamic(
@@ -9,16 +10,23 @@ const NotificationList = dynamic(
   { ssr: false }
 );
 
-type NotificationType = {
-  name: string;
-  date: string;
-};
+const HeadSeo = dynamic(() => import('@/components/utilities/HeadSeo'), {
+  ssr: false,
+});
 
 const Notification: NextPageWithLayout = () => {
   const [notificationData, setNotificationData] = useState<NotificationType[]>(
     []
   );
-  useEffect(() => {
+
+  const handleClickNotificationItem = useCallback(
+    (notification: NotificationType) => {
+      console.log(notification);
+    },
+    []
+  );
+
+  useIsomorphicLayoutEffect(() => {
     const currentDate = new Date().toISOString();
     const sampleData = Array.from(Array(10).keys()).map((i) => ({
       name: 'name ' + i,
@@ -34,7 +42,10 @@ const Notification: NextPageWithLayout = () => {
         key={'notification'}
       />
       <h1>Notification</h1>
-      <NotificationList notifications={notificationData} />
+      <NotificationList
+        notifications={notificationData}
+        onItemClick={handleClickNotificationItem}
+      />
     </>
   );
 };

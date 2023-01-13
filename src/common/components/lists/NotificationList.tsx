@@ -8,17 +8,22 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { grey } from '@mui/material/colors';
+import { memo } from 'react';
 
-type NotificationType = {
+export type NotificationType = {
   name: string;
   date: string;
 };
 
 type NotificationListType = {
   notifications: Array<NotificationType>;
+  onItemClick?: ((notification: NotificationType) => void) | undefined;
 };
 
-const NotificationList = ({ notifications }: NotificationListType) => {
+const NotificationList: React.FC<NotificationListType> = ({
+  notifications,
+  onItemClick,
+}) => {
   return (
     <>
       <List sx={{ px: 0 }}>
@@ -46,7 +51,11 @@ const NotificationList = ({ notifications }: NotificationListType) => {
             {notifications.map((notification) => {
               return (
                 <ListItem sx={{ p: 0 }} key={notification.name} divider>
-                  <ListItemButton>
+                  <ListItemButton
+                    onClick={() =>
+                      onItemClick ? onItemClick(notification) : undefined
+                    }
+                  >
                     <HelpRounded fontSize="large" color="primary" />
                     <Box sx={{ ml: 2 }}>
                       <Typography variant="h6" component="h3" fontWeight={500}>
@@ -67,4 +76,4 @@ const NotificationList = ({ notifications }: NotificationListType) => {
   );
 };
 
-export default NotificationList;
+export default memo(NotificationList);
