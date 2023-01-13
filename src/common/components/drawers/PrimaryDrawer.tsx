@@ -77,11 +77,11 @@ interface PrimaryDrawerProps {
   setDrawerOpen?: (status: boolean) => void;
 }
 
-export default function PrimaryDrawer({
+const PrimaryDrawer: React.FC<PrimaryDrawerProps> = ({
   setDrawerOpen,
   open,
   children,
-}: PrimaryDrawerProps) {
+}) => {
   const theme = useTheme();
   const router = useRouter();
   const [navItems, setNavItems] = useAtom(navItemsAtom);
@@ -126,7 +126,13 @@ export default function PrimaryDrawer({
               mx: 2,
             }}
           >
-            <Image src="/next.svg" alt="Brand Logo" fill />
+            <Image
+              src="/next.svg"
+              alt="Brand Logo"
+              fill
+              sizes="100vw"
+              priority
+            />
           </Box>
           <IconButton aria-label="Collapse" onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
@@ -208,4 +214,6 @@ export default function PrimaryDrawer({
       <Box sx={{ p: 4 }}>{children}</Box>
     </Box>
   );
-}
+};
+
+export default PrimaryDrawer;

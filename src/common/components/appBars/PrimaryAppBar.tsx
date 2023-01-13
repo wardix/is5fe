@@ -78,7 +78,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function PrimaryAppBar(props: Props) {
+const PrimaryAppBar: React.FC<Props> = (props) => {
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(
     null
   );
@@ -97,34 +97,34 @@ export default function PrimaryAppBar(props: Props) {
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setProfileAnchorEl(event.currentTarget);
   };
-
   const handleNotificationMenuToggle = (
     event: React.MouseEvent<HTMLElement>
   ) => {
     setNotificationAnchorEl(event.currentTarget);
     setIsNotificationOpen((prev) => !prev);
   };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
   const handleFeedbackClose = () => {
     setFeedbackOpen(false);
   };
-
   const handleProfileMenuClose = () => {
     setProfileAnchorEl(null);
     handleMobileMenuClose();
   };
-
   const handleNotificationMenuClose = () => {
     setNotificationAnchorEl(null);
     handleMobileMenuClose();
   };
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+  const handleClickHelpMenu = () => setOpenHelpDrawer(!openHelpDrawer);
+  const handleExpandDrawer = () => {
+    props.onDrawerOpen && props.onDrawerOpen(true);
+  };
+  const handleOpenFeedback = () => setFeedbackOpen(true);
 
   const menuId = 'primary-account-menu';
   const renderProfileMenu = (
@@ -180,7 +180,7 @@ export default function PrimaryAppBar(props: Props) {
           size="large"
           aria-label="open help menu"
           color="inherit"
-          onClick={() => setOpenHelpDrawer(!openHelpDrawer)}
+          onClick={handleClickHelpMenu}
         >
           <HelpOutline />
         </IconButton>
@@ -290,9 +290,7 @@ export default function PrimaryAppBar(props: Props) {
                 color="inherit"
                 aria-label="open drawer"
                 sx={{ mr: 2, ...(props.openDrawer && { display: 'none' }) }}
-                onClick={() => {
-                  props.onDrawerOpen && props.onDrawerOpen(true);
-                }}
+                onClick={handleExpandDrawer}
               >
                 <MenuIcon />
               </IconButton>
@@ -303,7 +301,7 @@ export default function PrimaryAppBar(props: Props) {
                     size="large"
                     aria-label="send user feedback"
                     color="inherit"
-                    onClick={() => setFeedbackOpen(true)}
+                    onClick={handleOpenFeedback}
                   >
                     <FeedbackOutlined />
                   </IconButton>
@@ -313,7 +311,7 @@ export default function PrimaryAppBar(props: Props) {
                     size="large"
                     aria-label="open help menu"
                     color="inherit"
-                    onClick={() => setOpenHelpDrawer(!openHelpDrawer)}
+                    onClick={handleClickHelpMenu}
                   >
                     <HelpOutline />
                   </IconButton>
@@ -367,4 +365,6 @@ export default function PrimaryAppBar(props: Props) {
       ></FeedbackDialog>
     </>
   );
-}
+};
+
+export default PrimaryAppBar;

@@ -62,13 +62,13 @@ type FeedbackErrorMessagesType = {
   feedbackDescription: string;
 };
 
-const FeedbackDialog = ({
+const FeedbackDialog: React.FC<FeedbackDialogPropType> = ({
   open,
   onClose: handleClose,
-}: FeedbackDialogPropType) => {
+}) => {
   const router = useRouter();
 
-  const BootstrapDialogTitle = (props: DialogTitleProps) => {
+  const BootstrapDialogTitle: React.FC<DialogTitleProps> = (props) => {
     const { children, onClose, ...other } = props;
 
     return (
@@ -114,13 +114,11 @@ const FeedbackDialog = ({
       setFeedbackCategory(newFeedbackCategory);
     }
   };
-
   const handleUpdatefeedbackDescription = (event: {
     target: { value: SetStateAction<string> };
   }) => {
     setfeedbackDescription(event.target.value);
   };
-
   const handleUploadImage = (evt: any) => {
     const file = evt.target?.files[0];
     if (file) {
@@ -131,7 +129,6 @@ const FeedbackDialog = ({
       if (chooseImage.current) chooseImage.current.value = '';
     }
   };
-
   const submitFeedback = async () => {
     if (!feedbackCategory) {
       setErrorMessage({
@@ -170,7 +167,6 @@ const FeedbackDialog = ({
     };
     return axios.post(`${process.env.NEXT_PUBLIC_FEEDBACK}`, formData, config);
   };
-
   const resetFeedbackForm = () => {
     setFileImage([]);
     setSelectedImage(0);
@@ -180,7 +176,6 @@ const FeedbackDialog = ({
     errorMessage.feedbackCategory = '';
     handleClose();
   };
-
   const { mutate: handleSubmitFeedback } = useMutation(submitFeedback, {
     onSuccess: () => {
       resetFeedbackForm();
@@ -189,7 +184,6 @@ const FeedbackDialog = ({
       console.log(err);
     },
   });
-
   const handleRemoveImage = (index: number) => {
     setFileImage([...fileImage.slice(0, index), ...fileImage.slice(index + 1)]);
     setPreviewImages([
@@ -197,6 +191,13 @@ const FeedbackDialog = ({
       ...previewImages.slice(index + 1),
     ]);
     setSelectedImage(0);
+  };
+  const handleCloseDialog = () => {
+    resetFeedbackForm();
+    handleClose();
+  };
+  const handleSelectPreviewImage = (index: number) => {
+    setSelectedImage(index);
   };
 
   useIsomorphicLayoutEffect(() => {
@@ -247,20 +248,14 @@ const FeedbackDialog = ({
   return (
     <>
       <BootstrapDialog
-        onClose={() => {
-          resetFeedbackForm();
-          handleClose();
-        }}
+        onClose={handleCloseDialog}
         aria-labelledby="customized-dialog-title"
         disableEnforceFocus
         open={open && !loadingTakeScreenshot ? true : false}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
-          onClose={() => {
-            resetFeedbackForm();
-            handleClose();
-          }}
+          onClose={handleCloseDialog}
         >
           Send Feedback
         </BootstrapDialogTitle>
@@ -325,7 +320,7 @@ const FeedbackDialog = ({
                         width: '4rem',
                         height: '4rem',
                       }}
-                      onClick={() => setSelectedImage(index)}
+                      onClick={() => handleSelectPreviewImage(index)}
                     >
                       {image ? (
                         <Image

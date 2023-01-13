@@ -1,6 +1,10 @@
-import HeadSeo from '@/common/components/utilities/HeadSeo';
 import DashboardLayout from '@/components/layouts/DashboardLayout';
+import dynamic from 'next/dynamic';
 import { NextPageWithLayout } from '../page';
+
+const HeadSeo = dynamic(() => import('@/components/utilities/HeadSeo'), {
+  ssr: false,
+});
 
 const Dashboard: NextPageWithLayout = () => {
   return (

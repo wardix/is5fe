@@ -1,11 +1,14 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import HelpDrawer from '../drawers/HelpDrawer';
 
 const PrimaryAppBar = dynamic(() => import('../appBars/PrimaryAppBar'), {
   ssr: false,
 });
 const PrimaryDrawer = dynamic(() => import('../drawers/PrimaryDrawer'), {
+  ssr: false,
+});
+
+const HelpDrawer = dynamic(() => import('../drawers/HelpDrawer'), {
   ssr: false,
 });
 

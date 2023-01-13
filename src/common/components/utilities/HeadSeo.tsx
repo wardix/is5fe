@@ -6,12 +6,12 @@ type headerProps = {
   canonicalUrl?: string;
   children?: ReactNode;
 };
-const HeadSeo = ({
+const HeadSeo: React.FC<headerProps> = ({
   title,
   description,
   canonicalUrl,
   children,
-}: headerProps) => {
+}) => {
   return (
     <Head>
       <title>{title}</title>

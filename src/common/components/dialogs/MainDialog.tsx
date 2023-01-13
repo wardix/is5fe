@@ -9,8 +9,11 @@ import {
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
-import FeedbackDialog from './FeedbackDialog';
+import dynamic from 'next/dynamic';
+import { memo, useState } from 'react';
+const FeedbackDialog = dynamic(() => import('./FeedbackDialog'), {
+  ssr: false,
+});
 
 interface DialogTitleProps {
   id: string;
@@ -53,7 +56,7 @@ type MainDialogPropType = {
   onClose: () => void;
 };
 
-const MainDialog = ({
+const MainDialog: React.FC<MainDialogPropType> = ({
   children,
   open,
   size,
@@ -66,8 +69,8 @@ const MainDialog = ({
   onClose: handleClose,
   onSubmit,
   ...otherMainProps
-}: MainDialogPropType) => {
-  const BootstrapDialogTitle = (props: DialogTitleProps) => {
+}) => {
+  const BootstrapDialogTitle: React.FC<DialogTitleProps> = (props) => {
     const { children, onClose, ...other } = props;
 
     return (
@@ -94,6 +97,18 @@ const MainDialog = ({
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [hideDialog, setHideDialog] = useState(false);
 
+  const handleClickFeedbackButton = () => {
+    setFeedbackOpen(true);
+    setTimeout(() => {
+      setHideDialog(true);
+    }, 250);
+  };
+
+  const handleCloseFeedbackDialog = () => {
+    setFeedbackOpen(false);
+    setHideDialog(false);
+  };
+
   return (
     <>
       {!noFeedback && open && !feedbackOpen ? (
@@ -108,12 +123,7 @@ const MainDialog = ({
             textOrientation: 'sideways',
             transform: `rotate(-90deg) translateY(30px)`,
           }}
-          onClick={() => {
-            setFeedbackOpen(true);
-            setTimeout(() => {
-              setHideDialog(true);
-            }, 250);
-          }}
+          onClick={handleClickFeedbackButton}
         >
           Feedback
         </Button>
@@ -156,15 +166,9 @@ const MainDialog = ({
           </DialogActions>
         ) : undefined}
       </BootstrapDialog>
-      <FeedbackDialog
-        open={feedbackOpen}
-        onClose={() => {
-          setFeedbackOpen(false);
-          setHideDialog(false);
-        }}
-      />
+      <FeedbackDialog open={feedbackOpen} onClose={handleCloseFeedbackDialog} />
     </>
   );
 };
 
-export default MainDialog;
+export default memo(MainDialog);

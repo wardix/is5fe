@@ -15,10 +15,13 @@ type UserLoginType = {
   onSubmit: ({ username, password }: LoginInfo) => void;
 };
 
-const LoginCard = ({ onSubmit }: UserLoginType) => {
+const LoginCard: React.FC<UserLoginType> = ({ onSubmit }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleToggleShowPassword = () => setShowPassword(!showPassword);
+
   return (
     <>
       <form
@@ -51,7 +54,7 @@ const LoginCard = ({ onSubmit }: UserLoginType) => {
                 type={showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position="end">
-                    <Button onClick={() => setShowPassword(!showPassword)}>
+                    <Button onClick={handleToggleShowPassword}>
                       {showPassword ? 'Show' : 'Hide'}
                     </Button>
                   </InputAdornment>
