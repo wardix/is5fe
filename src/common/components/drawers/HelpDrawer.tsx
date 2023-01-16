@@ -21,17 +21,34 @@ import {
 import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import { useAtom } from 'jotai';
-import { useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 
 const drawerWidth = { sm: '100vw', md: 360 };
 
 const HelpDrawer: React.FC = () => {
+  const router = useRouter();
   const [open, setOpen] = useAtom(isOpenHelpDrawerAtom);
   const [helpContents, setHelpContents] = useAtom(helpContentsAtom);
   const [openedHelpItems, setOpenedHelpItems] = useState<string[]>([]);
   const [selectedHelpContent, setSelectedHelpContent] = useAtom(
     selectedHelpContentAtom
   );
+
+  useEffect(() => {
+    if (open) {
+      const currentRouteHelpItem = helpContents.find((helpItem) =>
+        helpItem?.routes?.includes(router.asPath)
+      );
+      const directOpenEmbededLink = currentRouteHelpItem?.contents?.find(
+        (content) => content?.routes?.includes(router.asPath)
+      )?.embeddedLink;
+      if (currentRouteHelpItem) {
+        setOpenedHelpItems([currentRouteHelpItem.id]);
+        directOpenEmbededLink && setSelectedHelpContent(directOpenEmbededLink);
+      }
+    }
+  }, [router.asPath, open, helpContents]);
 
   const handleClickHelpItem = useCallback(
     (id: string) => {
