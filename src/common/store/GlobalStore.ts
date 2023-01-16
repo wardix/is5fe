@@ -79,6 +79,7 @@ const helpContents = [
     id: 'lead',
     label: 'Lead',
     contents: helpDocs.example,
+    routes: ['/dashboard/example', '/dashboard'],
   },
   {
     id: 'account',

@@ -3,6 +3,7 @@ const exampleHelp = [
     label: 'Menambah Lead baru',
     embeddedLink:
       'https://docs.google.com/document/d/e/2PACX-1vRoXt362Bd8VElI1xOZruC5lOufNbwuwGlPpUpMdY2gQeepd8fPQ_zonguEVpGTqQkB4j5izEU180KZ/pub?embedded=true',
+    routes: ['/dashboard/example'],
   },
   {
     label: 'Mencari, memfilter dan menyortir daftar Lead',
